@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Proyecto_Gasolinera
 {
-    internal class Cliente
+    internal class Usuario
     {
-        private string nombre;//atributos
-        private string apellido;//
+
+        private string nombre;
+        private string apellido;
         private int nit;
         private string direccion;
 
-        public Cliente()
+        public Usuario()
         {
             this.nombre = "";
             this.apellido = "";
             this.nit = 0;
             this.direccion = "";
         }
-
         public string Nombre { get => nombre; set => nombre = value; }
         public string Apellido { get => apellido; set => apellido = value; }
         public int Nit { get => nit; set => nit = value; }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,26 +13,40 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Proyecto_Gasolinera
 {
+
+     
     public partial class Form1 : Form
     {
-        System.IO.Ports.SerialPort Arduino = new System.IO.Ports.SerialPort();
+        System.IO.Ports.SerialPort Arduino = new System.IO.Ports.SerialPort();//crea un objeto de la clase SerialPort
 
-        int Preciogasolina = 20;
+        int Preciogasolina = 20;//precio de la gasolina
+
+        ListadoAbastecimientos listado = new ListadoAbastecimientos();//crea un objeto de la clase ListadoAbastecimientos
         public Form1()
         {
-            InitializeComponent();
-            Arduino.PortName = "COM47";
-            Arduino.BaudRate = 9600;
-            Arduino.Open();
-            Arduino.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(DataReceived);
+            //comentario
+            InitializeComponent();//inicializa los componentes
+            Arduino.PortName = "COM14";//selecciona el puerto
+            Arduino.BaudRate = 9600;//selecciona la velocidad
+            Arduino.Open();//abre el puerto
+            Arduino.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(DataReceived);//evento de recepcion de datos
 
         }
         void DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            string dato = Arduino.ReadLine();
-            this.Invoke(new MethodInvoker(delegate
+            string dato = Arduino.ReadLine();//lee el dato
+
+            string json = "";
+            this.Invoke(new MethodInvoker(delegate//invoca el metodo
             {
-                label27.Text = dato;
+                label27.Text = dato;//muestra el dato en el label
+
+                json += dato;
+                if(json.Contains("}"))
+                {
+                    DesenrializarJSON(json);
+                    json = "";
+                }
                 
                 //SenrializarJson();
             }));
@@ -45,41 +60,79 @@ namespace Proyecto_Gasolinera
 
 
         }
+        private void DesenrializarJSON(string json)
+        {
+            ArduinoJsonDes account = JsonConvert.DeserializeObject<ArduinoJsonDes>(json);
+            int cantidad = account.CantidadRestante;
+            int bomba = account.Bomba;
+            if(cantidad == 0)
+            {
+                MessageBox.Show("Se ha llenado el tanque");
+
+            }
+            else
+            {
+                MessageBox.Show("Quedan " + cantidad + " galones");
+            }
+
+
+
+            Abastecimiento abastecimiento = new Abastecimiento();
+            abastecimiento.Bomba = bomba;
+            abastecimiento.Cantidad = cantidad;
+
+            abastecimiento.Cliente = new Cliente();
+            abastecimiento.Cliente.Nombre = "Cliente";
+            abastecimiento.Cliente.Apellido = "Cliente";
+            abastecimiento.Cliente.Nit = 123456;
+            abastecimiento.Cliente.Direccion = "Direccion";
+            
+            abastecimiento.Fecha = DateTime.Now;
+            abastecimiento.Tipo = "Prepago limitado";
+            abastecimiento.Precio = cantidad * Preciogasolina;
+            listado.agregarAbastecimiento(abastecimiento);
+            MostrarEnDataView();
+            EscribirenText();
+
+        }
+
+
 
         private void SenrializarJson(double cantidad)
         {
-            JsonAccount account = new JsonAccount();
+            JsonAccount account = new JsonAccount();//crea un objeto de la clase JsonAccount
             
             
-            account.preciodia = Preciogasolina;
-            account.bomba = 1;
-            account.cantidad = cantidad;
-            string json = JsonConvert.SerializeObject(account);
+            account.preciodia = Preciogasolina;//asigna el precio del dia
+            account.bomba = 1;//asigna la bomba
+            account.cantidad = cantidad;//asigna la cantidad de gasolina
+            string json = JsonConvert.SerializeObject(account);//serializa el objeto
             //label27.Text = json;
-            Arduino.WriteLine(json);
+            Arduino.WriteLine(json);//envia el json al arduino
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            CargarArchivo();
 
         }
 
         private void txtLlenar_Click(object sender, EventArgs e)
         {
-            double cantidad = 0;
-            double precioSolicitado = 0;
-            String tipoSeleccionado = "";
+            double cantidad = 0;//inicializa la cantidad
+            double precioSolicitado = 0;//  inicializa el precio solicitado
+            String tipoSeleccionado = "";//inicializa el tipo seleccionado
             //Indicar que combobox se ha seleccionado
-            int tanqueSeleccionado = 0;
-            if(radioButton1.Checked  == true)
-                tanqueSeleccionado = 1;
-            else if(radioButton2.Checked == true)
-                tanqueSeleccionado = 2;
-            else if(radioButton3.Checked == true)
-                tanqueSeleccionado = 3;
-            else if(radioButton4.Checked == true)
-                tanqueSeleccionado = 4;
-            if(tanqueSeleccionado == 0)
+            int tanqueSeleccionado = 0;//inicializa el tanque seleccionado
+            if(radioButton1.Checked  == true)//si el radiobutton 1 esta seleccionado
+                tanqueSeleccionado = 1;//asigna el tanque 1
+            else if(radioButton2.Checked == true)//si el radiobutton 2 esta seleccionado
+                tanqueSeleccionado = 2;//asigna el tanque 2
+            else if(radioButton3.Checked == true)//si el radiobutton 3 esta seleccionado
+                tanqueSeleccionado = 3;//asigna el tanque 3
+            else if(radioButton4.Checked == true)//si el radiobutton 4 esta seleccionado
+                tanqueSeleccionado = 4;//asigna el tanque 4
+            if(tanqueSeleccionado == 0)//si no se ha seleccionado ningun tanque
             {
                 //No se ha seleccionado ningun tanque, messagebox. Error
                 MessageBox.Show("No se ha seleccionado ningun tanque", "Tanque",MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -89,7 +142,7 @@ namespace Proyecto_Gasolinera
             }else
             {
 
-                if (txtPrepago.Text == "")
+                if (txtPrepago.Text == "")//si no se ha ingresado ningun monto
                 {
                     //Significa que se ha seleccionado la opcion de prepago ilimitado
                     var result = MessageBox.Show("No se ha ingresado ningun monto, se procedera a llenar ilimitado", "Abastecimiento", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
@@ -109,12 +162,24 @@ namespace Proyecto_Gasolinera
                 {
                     //Significa que se ha seleccionado la opcion de prepago limitado
                     precioSolicitado = Convert.ToDouble(txtPrepago.Text);
-                    cantidad = precioSolicitado / Preciogasolina;
-                    label5.Text = Preciogasolina.ToString();
-                    label1.Text = cantidad.ToString();
-                    MessageBox.Show("Cantidad de gasolina: " + cantidad);
-                    tipoSeleccionado = "Prepago limitado";
-                    SenrializarJson(cantidad);
+                    cantidad = precioSolicitado / Preciogasolina;//calcula la cantidad de gasolina
+                    label5.Text = Preciogasolina.ToString();//muestra el precio de la gasolina
+                    label1.Text = cantidad.ToString();//muestra la cantidad de gasolina
+                    MessageBox.Show("Cantidad de gasolina: " + cantidad);//muestra la cantidad de gasolina
+                    tipoSeleccionado = "Prepago limitado";//asigna el tipo seleccionado
+                    SenrializarJson(cantidad);//serializa el json
+                    //luego de senrializar el json, debe de esperar a que el arduino le envie la cantidad restante de gasolina
+                    //para poder continuar con el proceso, por lo que se debe de esperar a que el arduino le envie la cantidad restante. Lo leera y lo mandara a deserializar y retornara la cantidad restante. 
+                    //luego de obtener la cantidad restante, se procedera a crear el objeto cliente y el objeto abastecimiento y se guardara en el archivo de texto
+                    //luego se mostrara en el datagridview
+                    //que se debe de hacer para esperar?
+                    //se debe de crear un evento que se ejecute cuando el arduino le envie la cantidad restante
+                    //crealo
+
+                    //Crea una promesa que se ejecute cuando el arduino le envie la cantidad restante
+                    
+
+
 
                 }
                 /*string nombre = txtNombre.Text;
@@ -126,6 +191,78 @@ namespace Proyecto_Gasolinera
                 Abastecimiento abastecimiento = new Abastecimiento(cliente, fecha, tipoSeleccionado, cantidad, precioSolicitado);
                 */
             }
+        }
+
+        
+        private void CargarArchivo()
+        {
+            string nombrearchivo = "Abastecimientos.txt";
+            FileStream stream = new FileStream(nombrearchivo, FileMode.OpenOrCreate, FileAccess.Read);
+            StreamReader LeerArchivo = new StreamReader(stream);
+            string linea = LeerArchivo.ReadLine();
+            while(linea != null)
+            {
+                string[] datos = linea.Split(';');
+                //dataGridView1.Rows.Add(datos);
+                linea = LeerArchivo.ReadLine();
+
+                //utiliza el metodo trim para eliminar los espacios en blanco
+                //MessageBox.
+
+                
+                MessageBox.Show(datos[0]);
+                Abastecimiento abastecimiento = new Abastecimiento();
+
+                Cliente cliente = new Cliente();
+                //abastecimiento.Cliente.Nombre = datos[0].ToString();
+                //abastecimiento.Cliente.Apellido = datos[0].ToString();
+                //Luis;Colop;1921029;Ciudad;2;40;1;29/05/2024;
+                cliente.Nombre = datos[0];
+                cliente.Apellido = datos[1];
+                cliente.Nit = Convert.ToInt32(datos[2]);
+                cliente.Direccion = datos[3];
+                abastecimiento.Cliente = cliente;
+
+                abastecimiento.Cantidad = Convert.ToDouble(datos[4]);
+                abastecimiento.Precio = Convert.ToDouble(datos[5]);
+                abastecimiento.Bomba = Convert.ToInt32(datos[6]);
+                abastecimiento.Fecha2 = datos[7];
+                abastecimiento.Tipo = datos[8];
+                
+                
+                
+                listado.agregarAbastecimiento(abastecimiento);
+
+            }
+            LeerArchivo.Close();
+            stream.Close();
+            MostrarEnDataView();
+        }
+
+        private void MostrarEnDataView()
+        {
+            dataGridView1.Rows.Clear();
+            Abastecimiento actual = listado.Primero;
+            while (actual != null)
+            {
+                dataGridView1.Rows.Add(actual.Fecha, actual.Cantidad, actual.Tipo, actual.Bomba);
+                actual = actual.Siguiente;
+            }
+        }
+
+        private void EscribirenText()
+        {
+            string archivo = "Abastecimientos.txt";
+            FileStream stream = new FileStream(archivo, FileMode.Create, FileAccess.Write);
+            StreamWriter escribir = new StreamWriter(stream);
+            Abastecimiento actual = listado.Primero;
+            while (actual != null)
+            {
+                escribir.WriteLine(actual.Cliente.Nombre + ";" + actual.Cliente.Apellido + ";" + actual.Cliente.Nit + ";" + actual.Cliente.Direccion + ";" + actual.Cantidad + ";" + actual.Precio + ";" + actual.Bomba + ";" + actual.Fecha2 + ";" + actual.Tipo);
+                actual = actual.Siguiente;
+            }
+            escribir.Close();
+            stream.Close();
         }
     }
 }

@@ -1,0 +1,3 @@
+Luis;Colop;1921029;Ciudad;2;40;1;29/05/2024;Prepago limitado
+Julio;Colop;1921029;Ciudad;2;40;1;29/05/2024;lleno
+Lucas;Camposeco;123456;Direccion;0;0;1;29/05/2024;Prepago limitado

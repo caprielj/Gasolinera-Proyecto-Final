@@ -8,6 +8,7 @@ namespace Proyecto_Gasolinera
 {
     internal class ListadoAbastecimientos
     {
+
         private Abastecimiento primero;
         private Abastecimiento ultimo;
 
@@ -15,7 +16,7 @@ namespace Proyecto_Gasolinera
         {
             this.primero = null;
             this.ultimo = null;
-        }
+        }   
 
         public Abastecimiento Primero { get => primero; set => primero = value; }
         public Abastecimiento Ultimo { get => ultimo; set => ultimo = value; }
@@ -34,12 +35,12 @@ namespace Proyecto_Gasolinera
             primero = nuevo;
             ultimo = nuevo;
             ultimo.Siguiente = null;
-
+            
         }
 
         public void agregarAbastecimiento(Abastecimiento abastecimiento)
         {
-            if (primero == null)
+            if(primero == null)
             {
                 agregarAbastecimientoInicio(abastecimiento);
             }
@@ -62,7 +63,7 @@ namespace Proyecto_Gasolinera
 
         public void limpiarLista()
         {
-            while (primero != null)
+         while (primero != null)
             {
                 Abastecimiento aux = primero;
                 primero = primero.Siguiente;

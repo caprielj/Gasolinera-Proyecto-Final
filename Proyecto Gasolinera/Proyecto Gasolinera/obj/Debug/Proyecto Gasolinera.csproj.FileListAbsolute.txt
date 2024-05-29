@@ -11,16 +11,6 @@ C:\Users\luisc\source\repos\Proyecto Gasolinera\Proyecto Gasolinera\obj\Debug\Pr
 C:\Users\luisc\source\repos\Proyecto Gasolinera\Proyecto Gasolinera\bin\Debug\Newtonsoft.Json.dll
 C:\Users\luisc\source\repos\Proyecto Gasolinera\Proyecto Gasolinera\bin\Debug\Newtonsoft.Json.xml
 C:\Users\luisc\source\repos\Proyecto Gasolinera\Proyecto Gasolinera\obj\Debug\Proyecto Gasolinera.csproj.CopyComplete
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\bin\Debug\Proyecto Gasolinera.exe.config
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\bin\Debug\Proyecto Gasolinera.exe
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\bin\Debug\Proyecto Gasolinera.pdb
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\bin\Debug\Newtonsoft.Json.dll
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\bin\Debug\Newtonsoft.Json.xml
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\obj\Debug\Proyecto Gasolinera.csproj.AssemblyReference.cache
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\obj\Debug\Proyecto_Gasolinera.Form1.resources
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\obj\Debug\Proyecto_Gasolinera.Properties.Resources.resources
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\obj\Debug\Proyecto Gasolinera.csproj.GenerateResource.cache
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\obj\Debug\Proyecto Gasolinera.csproj.CoreCompileInputs.cache
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\obj\Debug\Proyecto.20AC9211.Up2Date
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\obj\Debug\Proyecto Gasolinera.exe
-C:\Users\LENOVO\Desktop\RepositorioGasolina-main\Proyecto Gasolinera\Proyecto Gasolinera\obj\Debug\Proyecto Gasolinera.pdb
+C:\Users\luisc\source\repos\Proyecto Gasolinera\Proyecto Gasolinera\bin\Debug\Newtonsoft.Json.Bson.dll
+C:\Users\luisc\source\repos\Proyecto Gasolinera\Proyecto Gasolinera\bin\Debug\Newtonsoft.Json.Bson.pdb
+C:\Users\luisc\source\repos\Proyecto Gasolinera\Proyecto Gasolinera\bin\Debug\Newtonsoft.Json.Bson.xml
